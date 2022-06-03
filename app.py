@@ -91,6 +91,9 @@ class Artist(db.Model):
     image_link = db.Column(db.String(500))
     shows = db.relationship('Show', backref='Artist', lazy=True)
 
+    def __repr__(self):
+      return f'<(Artist) id: {self.id}, name: {self.name} shows: {self.shows}>'
+
     # @hybrid_property
     # def past_shows(self):
     #   return (
@@ -118,6 +121,9 @@ class Show(db.Model):
     artist_id = db.Column(db.Integer, db.ForeignKey('Artist.id'), nullable=False)
     venue_id = db.Column(db.Integer, db.ForeignKey('Venue.id'), nullable=False)
     start_time = db.Column(db.DateTime, nullable=False)
+
+    def __repr__(self):
+      return f'<(Show) id: {self.id}, artist_id: {self.artist_id}, venue_id: {self.venue_id}, start_time: {self.start_time}>'
 
 
 #----------------------------------------------------------------------------#
