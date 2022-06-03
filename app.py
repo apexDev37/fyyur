@@ -51,6 +51,9 @@ class Venue(db.Model):
     image_link = db.Column(db.String(500))
     shows = db.relationship('Show', backref='Venue', lazy=True)
 
+    def __repr__(self):
+      return f'<(Venue) id: {self.id}, name: {self.name}, city: {self.city}, state: {self.state}, shows: {self.shows}>'
+
     # @hybrid_property
     # def past_shows(self):
     #   return (
@@ -104,7 +107,7 @@ class Artist(db.Model):
 
     # TODO: implement any missing fields, as a database migration using Flask-Migrate [COMPLETED]
 
-# TODO Implement Show and Artist models, and complete all model relationships and properties, as a database migration.
+# TODO Implement Show and Artist models, and complete all model relationships and properties, as a database migration. [COMPLETED]
 
 class Show(db.Model):
     __tablename__ = 'Show'
@@ -113,7 +116,6 @@ class Show(db.Model):
     artist_id = db.Column(db.Integer, db.ForeignKey('Artist.id'), nullable=False)
     venue_id = db.Column(db.Integer, db.ForeignKey('Venue.id'), nullable=False)
     start_time = db.Column(db.DateTime, nullable=False)
-
 
 
 #----------------------------------------------------------------------------#
@@ -144,30 +146,18 @@ def index():
 
 @app.route('/venues')
 def venues():
-  # TODO: replace with real venues data.
+  # TODO: replace with real venues data. [COMPLETED]
   #       num_upcoming_shows should be aggregated based on number of upcoming shows per venue.
-  data=[{
-    "city": "San Francisco",
-    "state": "CA",
-    "venues": [{
-      "id": 1,
-      "name": "The Musical Hop",
-      "num_upcoming_shows": 0,
-    }, {
-      "id": 3,
-      "name": "Park Square Live Music & Coffee",
-      "num_upcoming_shows": 1,
-    }]
-  }, {
-    "city": "New York",
-    "state": "NY",
-    "venues": [{
-      "id": 2,
-      "name": "The Dueling Pianos Bar",
-      "num_upcoming_shows": 0,
-    }]
-  }]
-  return render_template('pages/venues.html', areas=data);
+
+  data = []
+  venues = db.session.query(Venue).all()
+  area_groups = list({(venue.city, venue.state) for venue in venues})
+
+  for area in area_groups:
+    venues_group = [venue for venue in venues if (venue.city, venue.state) == area]
+    data.append({'city': area[0], 'state': area[1], 'venues': venues_group})
+
+  return render_template('pages/venues.html', areas=data)
 
 @app.route('/venues/search', methods=['POST'])
 def search_venues():
