@@ -169,7 +169,10 @@ def venues():
   area_groups = list({(venue.city, venue.state) for venue in venues})
 
   for area in area_groups:
-    venues_group = [venue for venue in venues if (venue.city, venue.state) == area]
+    venues_group = [
+      {'id': venue.id, 'name': venue.name, 'num_upcoming_shows': len(venue.upcoming_shows)}
+      for venue in venues if (venue.city, venue.state) == area
+    ]
     data.append({'city': area[0], 'state': area[1], 'venues': venues_group})
 
   return render_template('pages/venues.html', areas=data)
@@ -184,7 +187,7 @@ def search_venues():
   venues_by_search = db.session.query(Venue).filter(Venue.name.ilike(f'%{search_term}%')).all()
   data = {
     'count': len(venues_by_search),
-    'data': [{'id': venue.id, 'name': venue.name, 'num_upcoming_shows': 0} 
+    'data': [{'id': venue.id, 'name': venue.name, 'num_upcoming_shows': len(venue.upcoming_shows)} 
               for venue in venues_by_search]    
   }
 
@@ -335,7 +338,7 @@ def search_artists():
   artists_by_search = db.session.query(Artist).filter(Artist.name.ilike(f'%{search_term}%')).all()
   data = {
     'count': len(artists_by_search),
-    'data': [{'id': artist.id, 'name': artist.name, 'num_upcoming_shows': 0} 
+    'data': [{'id': artist.id, 'name': artist.name, 'num_upcoming_shows': len(artist.upcoming_shows)} 
               for artist in artists_by_search]
   }
 
