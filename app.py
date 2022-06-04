@@ -465,8 +465,49 @@ def edit_venue(venue_id):
 
 @app.route('/venues/<int:venue_id>/edit', methods=['POST'])
 def edit_venue_submission(venue_id):
-  # TODO: take values from the form submitted, and update existing
+  # TODO: take values from the form submitted, and update existing [COMPLETED]
   # venue record with ID <venue_id> using the new attributes
+
+  error = False
+  form = VenueForm(request.form)
+  venue = db.session.query(Venue).get(venue_id)
+  if form.validate():
+    name = form.name.data
+    city = form.city.data
+    state = form.state.data
+    address = form.address.data
+    phone = form.phone.data
+    genres = form.genres.data
+    facebook_link = form.facebook_link.data
+    image_link = form.image_link.data
+    website_link = form.website_link.data
+    seeking_talent = form.seeking_talent.data
+    seeking_description = form.seeking_description.data
+
+  try:
+    venue.name = name
+    venue.city = city
+    venue.state = state
+    venue.address = address
+    venue.phone = phone
+    venue.genres = genres
+    venue.facebook_link = facebook_link
+    venue.image_link = image_link
+    venue.website = website_link
+    venue.seeking_talent = seeking_talent
+    venue.seeking_description = seeking_description
+    print(venue)
+    db.session.commit()
+    flash(f'Venue, "{venue.name}" was successfully edited!')
+  except:
+    error = True
+    db.session.rollback()
+    print(sys.exc_info())
+  finally:
+    db.session.close()
+    if error == True:
+      flash(f'An error occurred! Venue, "{venue.name}" could not be edited!')
+
   return redirect(url_for('show_venue', venue_id=venue_id))
 
 #  Create Artist
