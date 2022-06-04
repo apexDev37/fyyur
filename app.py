@@ -3,6 +3,7 @@
 #----------------------------------------------------------------------------#
 
 from email.policy import default
+from enum import unique
 import json
 import dateutil.parser
 from datetime import datetime
@@ -41,11 +42,11 @@ class Venue(db.Model):
     __tablename__ = 'Venue'
 
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String)
-    genres = db.Column(db.ARRAY(db.String))
-    address = db.Column(db.String(120))
-    city = db.Column(db.String(120))
-    state = db.Column(db.String(120))
+    name = db.Column(db.String, nullable=False, unique=True)
+    genres = db.Column(db.ARRAY(db.String), nullable=False)
+    address = db.Column(db.String(120), nullable=False)
+    city = db.Column(db.String(120), nullable=False)
+    state = db.Column(db.String(120), nullable=False)
     phone = db.Column(db.String(120))
     website = db.Column(db.String(120))
     facebook_link = db.Column(db.String(120))
@@ -82,10 +83,10 @@ class Artist(db.Model):
     __tablename__ = 'Artist'
 
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String)
-    genres = db.Column(db.ARRAY(db.String(120)))
-    city = db.Column(db.String(120))
-    state = db.Column(db.String(120))
+    name = db.Column(db.String, nullable=False, unique=True)
+    genres = db.Column(db.ARRAY(db.String(120)), nullable=False)
+    city = db.Column(db.String(120), nullable=False)
+    state = db.Column(db.String(120), nullable=False)
     phone = db.Column(db.String(120))
     website = db.Column(db.String(120))
     facebook_link = db.Column(db.String(120))
