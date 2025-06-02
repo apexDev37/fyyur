@@ -1,6 +1,19 @@
 Fyyur
 -----
 
+#### ⚠️ Archived
+> **Note:** This repository has been **archived** and is no longer maintained.
+```
+This project was created primarily to attain my Full-Stack Developer Certification with Udacity back in 2022.
+It is no longer in active use, and there are no current or future plans to contribute to or develop this repository further.
+
+The code and history remain available for reference. Feel free to browse or fork, but please be aware that:
+- Issues and pull requests are disabled
+- No support or updates will be provided
+
+Thanks for your interest!
+```
+
 ## Introduction
 
 Fyyur is a musical venue and artist booking site that facilitates the discovery and bookings of shows between local performing artists and venues. This site lets you list new artists and venues, discover them, and list shows with artists as a venue owner.
